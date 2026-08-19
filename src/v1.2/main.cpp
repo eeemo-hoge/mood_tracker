@@ -32,13 +32,13 @@ void saveAndInput() {
     tm* timeinfo = localtime(&now);
     int hour = timeinfo->tm_hour;
     int min = timeinfo->tm_min;
-    if(min > 0) hour++;
+    int period = (min / 10);
     stringstream timestamp;
     timestamp << (1900 + timeinfo->tm_year)
               << setfill('0') << setw(2) << (1 + timeinfo->tm_mon)
               << setfill('0') << setw(2) << timeinfo->tm_mday
               << setfill('0') << setw(2) << hour
-              << setfill('0') << setw(2) << 0;
+              << setfill('0') << setw(2) << period;
     string dateTime = timestamp.str();
     fout << dateTime << ",";
     cout << "Enter scales (1-10) for the following parameters." << endl;
