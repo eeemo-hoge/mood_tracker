@@ -11,6 +11,11 @@
 #include <cmath>
 using namespace std;
 
+void playSound(const string& soundFile) {
+    string command = "audacious iphone.mp3 " + soundFile + " > /dev/null 2>&1 &";
+    system(command.c_str());
+}
+
 void displayCSV() {
     system("cat log.csv");
 }
@@ -40,44 +45,126 @@ void saveAndInput() {
     cout << "Anger scale (1-10): ";
     double anger = 0;
     cin >> anger;
+    if(anger >= 0 && anger <= 10){
+        cout << "Anger scale inputted successfully" << endl;
+    } else {
+        cout << "Invalid input for Anger scale. Please enter a value between 1 and 10." << endl;
+        return;
+    }
     cout << "Hunger scale (1-10): ";
     double hunger = 0;
     cin >> hunger;
+    if(hunger >= 0 && hunger <= 10){
+        cout << "Hunger scale inputted successfully" << endl;
+    } else {
+        cout << "Invalid input for Hunger scale. Please enter a value between 1 and 10." << endl;
+        return;
+    }
     cout << "Thirstty scale (1-10): ";
     double thirstty = 0;
     cin >> thirstty;
+    if(thirstty >= 0 && thirstty <= 10){
+        cout << "Thirstty scale inputted successfully" << endl;
+    } else {
+        cout << "Invalid input for Thirstty scale. Please enter a value between 1 and 10." << endl;
+        return;
+    }
+    cout << "Numbness scale (1-10): ";
     double numbness = 0;
+    cin >> numbness;
+    if(numbness >= 0 && numbness <= 10){
+        cout << "Numbness scale inputted successfully" << endl;
+    } else {
+        cout << "Invalid input for Numbness scale. Please enter a value between 1 and 10." << endl;
+        return;
+    }
+
     cout << "How much scale your body leads to just exist (1-10): ";
     double leadingToExist = 0;
     cin >> leadingToExist;
+    if(leadingToExist >= 0 && leadingToExist <= 10){
+        cout << "Leading to exist scale inputted successfully" << endl;
+    } else {
+        cout << "Invalid input for Leading to exist scale. Please enter a value between 1 and 10." << endl;
+        return;
+    }
     cout << "Sanity scale (1-10): ";
     double sanity = 0;
     cin >> sanity;
+    if(sanity >= 0 && sanity <= 10){
+        cout << "Sanity scale inputted successfully" << endl;
+    } else {
+        cout << "Invalid input for Sanity scale. Please enter a value between 1 and 10." << endl;
+        return;
+    }
     cout << "Reading speed scale (1-10): ";
     double readspeed = 0;
     cin >> readspeed;
+    if(readspeed >= 0 && readspeed <= 10){
+        cout << "Reading speed scale inputted successfully" << endl;
+    } else {
+        cout << "Invalid input for Reading speed scale. Please enter a value between 1 and 10." << endl;
+        return;
+    }
     cout << "Brain speed scale (1-10): ";
     double brainspeed = 0;
     cin >> brainspeed;
+    if(brainspeed >= 0 && brainspeed <= 10){
+        cout << "Brain speed scale inputted successfully" << endl;
+    } else {
+        cout << "Invalid input for Brain speed scale. Please enter a value between 1 and 10." << endl;
+        return;
+    }
     cout << "Dopamine level scale (1-10): ";
     double dopaminelevel = 0;
     cin >> dopaminelevel;
+    if(dopaminelevel >= 0 && dopaminelevel <= 10){
+        cout << "Dopamine level scale inputted successfully" << endl;
+    } else {
+        cout << "Invalid input for Dopamine level scale. Please enter a value between 1 and 10." << endl;
+        return;
+    }
     cout << "Sleepiness scale (1-10): ";
     double sleepiness = 0;
     cin >> sleepiness;
+    if(sleepiness >= 0 && sleepiness <= 10){
+        cout << "Sleepiness scale inputted successfully" << endl;
+    } else {
+        cout << "Invalid input for Sleepiness scale. Please enter a value between 1 and 10." << endl;
+        return;
+    }
     cout << "Pain of hand scale (1-10): ";
     double painofhand = 0;
     cin >> painofhand;
+    if(painofhand >= 0 && painofhand <= 10){
+        cout << "Pain of hand scale inputted successfully" << endl;
+    } else {
+        cout << "Invalid input for Pain of hand scale. Please enter a value between 1 and 10." << endl;
+        return;
+    }
     cout << "Ear warm scale (1-10): ";
     double earwarm = 0;
     cin >> earwarm;
+    if(earwarm >= 0 && earwarm <= 10){
+        cout << "Ear warm scale inputted successfully" << endl;
+    } else {
+        cout << "Invalid input for Ear warm scale. Please enter a value between 1 and 10." << endl;
+        return;
+    }
     cout << "BPM scale (50 -120): ";
     double bpm = 0;
-    cin >> bpm; 
+    cin >> bpm;
+    if(bpm >= 50 && bpm <= 120){
+        cout << "BPM scale inputted successfully" << endl;
+    } else {
+        cout << "Invalid input for BPM scale. Please enter a value between 50 and 120." << endl;
+        return;
+    }
     fout << anger << "," << hunger << "," << thirstty << "," << numbness << "," << leadingToExist << "," << sanity << "," << readspeed << "," << brainspeed << "," << dopaminelevel << "," << sleepiness << "," << painofhand << "," << earwarm << "," << bpm << endl;
     fout.close();
     cout << "Data saved" << endl;
 }
+
 void significant_analyze() {
     ifstream fin("log.csv");
     if(!fin){
@@ -254,28 +341,32 @@ void analyzeCSV() {
 }
 
 int main(){
-    string soundFile = "./adcious_android.mp3";
-    int reminderHour = 22;
+    string soundFile = "../adcious_iphone.mp3";
     int lastReminder = -1;
     
     cout << "Log system started. Commands: 1=View CSV, 2=Input data, 3=Exit" << endl;
     cout << "-------------------------------------------------------------" << endl;
     
     while(true) {
+        // 現在の時刻を取得
         time_t now = time(0);
+        // ローカルタイムに変換
         tm* timeinfo = localtime(&now);
-        if(timeinfo->tm_hour == reminderHour && lastReminder != reminderHour) {
+        // 現在の時刻を分単位で計算（時間 × 60 + 分）
+        int currentMinute = timeinfo->tm_hour * 60 + timeinfo->tm_min;
+        // リマインダーの分を60分単位で丸める
+        int reminderMinute = (currentMinute / 60) * 60;
+        
+        if(reminderMinute != lastReminder && timeinfo->tm_min == 0) {
             cout << "Time to input data!" << endl;
             playSound(soundFile);
-            lastReminder = reminderHour;
+            lastReminder = reminderMinute;
         }
         
-        if(timeinfo->tm_hour != reminderHour) {
-            lastReminder = -1;
-        }
-        
-        cout << "Enter command (1,2,3,4,5,6): ";
-        int cmd;
+        int cmd = 0;
+        cout << "---------------------------------------------" << endl;
+        cout << " 1: Show csv file,\n 2: Input data,\n 3: Exit,\n 4: Analyze the csv file,\n 5: Show Significant Analysis.csv file\n" << endl;
+        cout << "Enter command (1,2,3,4,5): ";
         cin >> cmd;
         
         if(cmd == 1) {
@@ -298,7 +389,7 @@ int main(){
     
         }
         else if(cmd == 5) {
-            system("cat analysis_result.txt");
+            system("cat significant_value.csv");
         }
 
         else {
